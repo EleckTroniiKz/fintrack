@@ -200,7 +200,7 @@ app.get('/entries/month', (req, res) => {
 });
 
 app.post('/entries', (req, res) => {
-    const { itemName, price, count, date, categoryID, paymentID } = req.body;
+    const { itemName, price, count, date, categoryID, paymentID, seller } = req.body;
 
     if (!itemName || !price || !count || !date || !categoryID || !paymentID) {
         return res.status(400).json({ error: "All fields are required" });
@@ -216,11 +216,11 @@ app.post('/entries', (req, res) => {
 
         // Insert the new entry
         const insertEntrySQL = `
-            INSERT INTO entries (ItemName, Price, Count, Date, CategoryID, PaymentID)
-            VALUES (?, ?, ?, ?, ?, ?)
+            INSERT INTO entries (ItemName, Price, Count, Date, CategoryID, PaymentID, Seller)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
         `;
 
-        db.query(insertEntrySQL, [itemName, price, count, date, categoryID, paymentID], (err, result) => {
+        db.query(insertEntrySQL, [itemName, price, count, date, categoryID, paymentID, seller], (err, result) => {
             if (err) {
                 console.error("Error inserting entry:", err);
                 return db.rollback(() => res.status(500).json(err));

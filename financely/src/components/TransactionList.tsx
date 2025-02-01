@@ -48,13 +48,27 @@ export function TransactionList(props: TransactionListProps) {
       {
           title: 'Date',
           dataIndex: 'Date',
-          key: 'date'
+          key: 'date',
+          render: (text) => {
+            const date = new Date(text);
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth()+1).padStart(2, '0');
+            const year = date.getFullYear();
+
+            return `${day}.${month}.${year}`;
+          }
       },
       {
         title: 'Category',
         dataIndex: 'CategoryID',
         key: 'CategoryID',
         render: (text) => <p>{categories.find((item) => item.ID == parseInt(text))?.NAME}</p>
+      },
+      {
+        title: 'Seller',
+        dataIndex: 'Seller',
+        key: 'Seller',
+        render: (text) => text !== null ? <p>{text}</p> : "-"
       },
       {
         title: 'Payment',

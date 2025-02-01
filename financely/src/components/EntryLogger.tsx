@@ -1,5 +1,5 @@
 import { Category } from "../VO/Category";
-import { Payment } from "../pages/Monthly";
+import { Payment } from "../VO/Payment";
 
 interface MonthEntryFormItem {
     itemName: string;
@@ -8,6 +8,7 @@ interface MonthEntryFormItem {
     date: string;
     categoryID: string;
     paymentID: string;
+    seller: string;
 }
 
 interface EntryLoggerProps {
@@ -22,11 +23,11 @@ interface EntryLoggerProps {
 export default function EntryLogger(props: EntryLoggerProps) {
     const {handleAddEntry, setNewEntry, newEntry, categories, payments} = props;
     return (
-        <div>
-            <h3>Add New Entry</h3>
+        <div style={{backgroundColor: '#ffffff', border: '1px solid ', padding: '5px', paddingLeft: '15px', borderRadius: '15px', marginTop: '15px'}}>
             <form onSubmit={handleAddEntry}>
                 <input
                 type="text"
+                style={{borderRadius: '5px', border: '1px solid #737373'}}
                 placeholder="Item Name"
                 value={newEntry.itemName}
                 onChange={(e) => setNewEntry({ ...newEntry, itemName: e.target.value })}
@@ -64,6 +65,13 @@ export default function EntryLogger(props: EntryLoggerProps) {
                     <option key={payment.ID} value={payment.ID}>{payment.Name}</option>
                 ))}
                 </select>
+                <input 
+                type="text"
+                value={newEntry.seller}
+                onChange={(e) => setNewEntry({ ...newEntry, seller: e.target.value})}
+                placeholder="Seller"
+                defaultValue={""}
+                />
                 <button type="submit">Add Entry</button>
             </form>
         </div>
