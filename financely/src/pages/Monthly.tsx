@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { RefObject, useEffect, useState } from "react";
 import { TransactionList } from "../components/TransactionList";
 import EntryLogger from "../components/EntryLogger";
 import ListFilterer from "../components/ListFilterer";
@@ -38,6 +38,7 @@ export function Monthly() {
     date: new Date().toISOString().split("T")[0], // Default to today
     categoryID: "",
     paymentID: "",
+    seller: ""
   });
 
   const handleDeleteEntryClicked = (id: number) => {
@@ -104,8 +105,9 @@ export function Monthly() {
       .catch((err) => console.error("Error fetching payments:", err));
   };
 
-  const handleAddEntry = (e: React.FormEvent) => {
+  const handleAddEntry = (e: React.FormEvent, itemRef: RefObject<HTMLInputElement>) => {
     e.preventDefault();
+    itemRef.current?.focus()
 
     fetch("http://localhost:8081/entries", {
       method: "POST",
@@ -125,7 +127,7 @@ export function Monthly() {
         return response.json();
       })
       .then(() => {
-        setNewEntry({ itemName: "", price: "", count: "", date: newEntry.date, categoryID: "", paymentID: "" });
+        setNewEntry({ itemName: "", price: "", count: "", date: newEntry.date, categoryID: "", paymentID: "", seller: "" });
         fetchEntries(); // Refresh entries after adding
       })
       .catch((err) => alert(err.message));

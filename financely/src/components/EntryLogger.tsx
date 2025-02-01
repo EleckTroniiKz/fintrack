@@ -1,5 +1,6 @@
 import { Category } from "../VO/Category";
 import { Payment } from "../VO/Payment";
+import { Ref, RefObject, useRef } from "react";
 
 interface MonthEntryFormItem {
     itemName: string;
@@ -12,7 +13,7 @@ interface MonthEntryFormItem {
 }
 
 interface EntryLoggerProps {
-    handleAddEntry: (e: React.FormEvent) => void;
+    handleAddEntry: (e: React.FormEvent, itemRef: RefObject<HTMLInputElement>) => void;
     setNewEntry: (item: MonthEntryFormItem) => void;
     newEntry: MonthEntryFormItem;
     categories: Category[];
@@ -22,11 +23,15 @@ interface EntryLoggerProps {
 
 export default function EntryLogger(props: EntryLoggerProps) {
     const {handleAddEntry, setNewEntry, newEntry, categories, payments} = props;
+
+    const itemNameRef = useRef<HTMLInputElement>(null);
+
     return (
         <div style={{backgroundColor: '#ffffff', border: '1px solid ', padding: '5px', paddingLeft: '15px', borderRadius: '15px', marginTop: '15px'}}>
-            <form onSubmit={handleAddEntry}>
+            <form onSubmit={(e) => handleAddEntry(e, itemNameRef)}>
                 <input
                 type="text"
+                ref={itemNameRef}
                 style={{borderRadius: '5px', border: '1px solid #737373'}}
                 placeholder="Item Name"
                 value={newEntry.itemName}

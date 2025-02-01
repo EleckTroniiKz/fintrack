@@ -38,7 +38,17 @@ export function TransactionList(props: TransactionListProps) {
       {
           title: 'Price',
           dataIndex: 'Price',
-          key: 'price'
+          key: 'price',
+          render: (text) => {
+            let color = "#000000"
+            if(parseFloat(text) < 0){
+              color = "#eb4034"
+            }
+            else if(parseFloat(text) > 0){
+              color = "#40eb34"
+            }
+            return <p style={{color: color}}>{text}</p>
+          }
       },
       {
           title: 'Count',
@@ -49,6 +59,9 @@ export function TransactionList(props: TransactionListProps) {
           title: 'Date',
           dataIndex: 'Date',
           key: 'date',
+          showSorterTooltip: {target: 'full-header'},
+          sorter: (a, b) => new Date(a.Date).getTime() - new Date(b.Date).getTime(),
+          sortDirections: ['descend'],
           render: (text) => {
             const date = new Date(text);
             const day = String(date.getDate()).padStart(2, '0');
