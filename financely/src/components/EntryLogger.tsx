@@ -1,6 +1,6 @@
 import { Category } from "../VO/Category";
 import { Payment } from "../VO/Payment";
-import { Ref, RefObject, useRef } from "react";
+import { RefObject, useRef } from "react";
 
 interface MonthEntryFormItem {
     itemName: string;

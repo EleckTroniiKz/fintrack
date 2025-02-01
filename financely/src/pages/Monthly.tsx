@@ -28,7 +28,6 @@ export function Monthly() {
   const [payments, setPayments] = useState<Payment[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [availableMonths, setAvailableMonths] = useState<{ month: Number; year: number}[]>([])
 
   // Form state
   const [newEntry, setNewEntry] = useState({
@@ -62,15 +61,7 @@ export function Monthly() {
     fetchEntries();
     fetchCategories();
     fetchPayments();
-    fetchAvailableMonths();
   }, [month, year]);
-
-  const fetchAvailableMonths = () => {
-    fetch("http://localhost:8081/entries/available-months")
-      .then((response) => response.json())
-      .then((data) => setAvailableMonths(data))
-      .catch((err) => console.error("Error fetching available months:", err));
-  };
 
   const fetchEntries = () => {
     setLoading(true);

@@ -94,7 +94,7 @@ export function TransactionList(props: TransactionListProps) {
         key: 'action',
         render: (_, record) => (
           <Space size="middle">
-            <button onClick={(e) => {deleteEntryHandler(record.ID)}}>Delete</button>
+            <button onClick={() => {deleteEntryHandler(record.ID)}}>Delete</button>
           </Space>
         )
       }
