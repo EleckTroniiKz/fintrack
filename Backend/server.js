@@ -55,22 +55,6 @@ app.post('/category', (req, res) => {
     });
 })
 
-app.get('/entries/available-months', (req, res) => {
-    const sql = `
-        SELECT DISTINCT MONTH(Date) AS month, YEAR(Date) AS year 
-        FROM entries 
-        ORDER BY year DESC, month DESC
-    `;
-
-    db.query(sql, (err, data) => {
-        if (err) {
-            console.error('Error querying the database:', err);
-            return res.status(500).json({ error: "Database query error", details: err });
-        }
-        return res.json(data);
-    });
-});
-
 // PUT: Update a category by ID
 app.put('/category/:id', (req, res) => {
     const { id } = req.params;
@@ -199,6 +183,21 @@ app.get('/entries/month', (req, res) => {
     });
 });
 
+app.get('/entries', (req, res) => {
+
+    const sql = `
+        SELECT * FROM entries 
+    `;
+
+    db.query(sql, (err, data) => {
+        if (err) {
+            console.error('Error querying the database:', err);
+            return res.status(500).json({ error: "Database query error", details: err });
+        }
+        return res.json(data);
+    });
+});
+
 app.post('/entries', (req, res) => {
     const { itemName, price, count, date, categoryID, paymentID, seller } = req.body;
 
@@ -318,6 +317,44 @@ app.delete('/entries/:id', (req, res) => {
         });
     });
 });
+
+app.get('/spending-progress', (req, res) => {
+    const sql = `
+        SELECT Date, p.Name AS Payment, SUM(e.Price * e.Count) AS TotalSpent
+        FROM entries e
+        JOIN payment p ON e.PaymentID = p.ID
+        GROUP BY Date, p.Name
+        ORDER BY Date ASC;
+    `;
+
+    db.query(sql, (err, data) => {
+        if (err) {
+            console.error('Error fetching spending progress:', err);
+            return res.status(500).json({ error: "Database query error" });
+        }
+        return res.json(data);
+    });
+});
+
+app.get('/category-spending', (req, res) => {
+    const sql = `
+        SELECT c.Name AS Category, SUM(e.Price * e.Count) AS TotalSpent
+        FROM entries e
+        JOIN category c ON e.CategoryID = c.ID
+        GROUP BY c.Name
+        ORDER BY TotalSpent DESC;
+    `;
+
+    db.query(sql, (err, data) => {
+        if (err) {
+            console.error('Error fetching category spending:', err);
+            return res.status(500).json({ error: "Database query error" });
+        }
+        return res.json(data);
+    });
+});
+
+
 
 // Start the server
 app.listen(8081, () => {

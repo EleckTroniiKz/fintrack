@@ -33,9 +33,8 @@ function getItem(
 const items: MenuItem[] = [
   getItem('Overview', '1', <PieChartOutlined />),
   getItem('Monthly', '2', <CalendarOutlined />),
-  getItem('Can', '3', <UserOutlined />),
-  getItem('Categories', '4', <GroupOutlined />),
-  getItem('Payments', '5', <WalletOutlined />)
+  getItem('Categories', '3', <GroupOutlined />),
+  getItem('Payments', '4', <WalletOutlined />)
 ];
 
 export default function App() {
@@ -49,10 +48,8 @@ export default function App() {
       case 2:
         return <Monthly />;
       case 3:
-        return <User />;
-      case 4:
         return <Categories />;
-      case 5:
+      case 4:
         return <Payments />;
       default:
         return <></>
